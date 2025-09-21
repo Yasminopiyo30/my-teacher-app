@@ -59,7 +59,7 @@ export default function Dashboard() {
         <div className="rounded-lg bg-white p-8 text-center shadow">
           <p className="text-gray-500">No learners registered yet.</p>
           <p className="mt-2 text-sm text-gray-400">
-            {`Click &quot;Add New Learner&quot; to get started.`}
+            Click "Add New Learner" to get started.
           </p>
         </div>
       ) : (

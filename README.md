@@ -6,7 +6,7 @@
 
 ## How to Use
 
-1. **Log in** with:
+1. **Log in** with any credentials for example:
    ```
    Username: teacher
    Password: 1234
@@ -24,6 +24,6 @@
 - **Next.js** — for smooth pages and routing
 - **React** — to build interactive components
 - **tailwind CSS** — clean styling
-- **StackBlitz** — runs 100% in my browser
+- **StackBlitz** — runs 100% 
 
 ---

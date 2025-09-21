@@ -15,9 +15,10 @@ export default function LoginPage() {
       return;
     }
 
-    // Simulate login
+    // ✅ Accept ANY credentials — it's a demo!
     if (typeof window !== 'undefined') {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', username); // Optional: save for display later
     }
 
     router.push('/dashboard');
@@ -64,7 +65,7 @@ export default function LoginPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your username"
+              placeholder="e.g. teacher"
               required
             />
           </div>
@@ -82,7 +83,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="••••••••"
+              placeholder="e.g. 1234"
               required
             />
           </div>
@@ -94,6 +95,12 @@ export default function LoginPage() {
             Login
           </button>
         </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-xs text-gray-500">
+            This is a demo - no real authentication is performed.
+          </p>
+        </div>
       </div>
     </div>
   );
