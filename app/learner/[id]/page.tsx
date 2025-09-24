@@ -97,12 +97,17 @@ export default function LearnerReportPage() {
       return;
     }
     setLearner(found);
+    console.log('Loaded learner:', found);
   }, [id, router]);
 
-  // Debug exam selection
+  // Debug exam selection and marks
   useEffect(() => {
     console.log('Selected Exam:', selectedExam);
-  }, [selectedExam]);
+    console.log('Current Learner Marks:', learner?.subjects?.map((s: any) => ({
+      name: s.name,
+      marks: s.marks,
+    })));
+  }, [selectedExam, learner]);
 
   const handleAddMark = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,6 +123,7 @@ export default function LearnerReportPage() {
     }
 
     addMark(Number(id), selectedSubject, markNum, selectedExam);
+    console.log('Added mark:', { subject: selectedSubject, mark: markNum, exam: selectedExam });
 
     // Refresh learner data
     const learners = getLearners();
@@ -180,18 +186,18 @@ export default function LearnerReportPage() {
                 key={idx}
                 className="border border-gray-200 rounded-lg p-6 hover:shadow-sm transition"
               >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-bold text-gray-800 text-lg">{subject.name}</h3>
+                <div className="flex flex-wrap justify-between items-start min-w-0">
+                  <div className="min-w-0">
+                    <h3 className="font-bold text-gray-800 text-lg break-words">{subject.name}</h3>
                     <p className="text-sm text-gray-600">{subject.pathway}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-right min-w-0">
                     {subject.marks.length === 0 ? (
-                      <p className="text-gray-500 italic">No marks yet</p>
+                      <p className="text-gray-600 italic text-base">No marks yet</p>
                     ) : (
                       <>
                         {subject.marks.map((m: any, i: number) => (
-                          <p key={i} className="font-mono text-sm">
+                          <p key={i} className="font-mono text-base text-gray-900">
                             {m.exam}: {m.value}
                           </p>
                         ))}
@@ -245,6 +251,7 @@ export default function LearnerReportPage() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 min-h-[48px] appearance-none"
                 required
               >
+                <option value="">Select Exam</option>
                 {EXAMS.map((exam) => (
                   <option key={exam} value={exam}>{exam}</option>
                 ))}
