@@ -99,6 +99,11 @@ export default function LearnerReportPage() {
     setLearner(found);
   }, [id, router]);
 
+  // Debug exam selection
+  useEffect(() => {
+    console.log('Selected Exam:', selectedExam);
+  }, [selectedExam]);
+
   const handleAddMark = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSubject || !mark || isNaN(Number(mark)) || !selectedExam) {
@@ -209,7 +214,7 @@ export default function LearnerReportPage() {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">➕ Add New Mark</h2>
           <form
             onSubmit={handleAddMark}
-            className="flex flex-col sm:flex-row gap-4 items-end"
+            className="flex flex-col gap-4 sm:flex-row sm:items-end"
           >
             <div className="flex-1 min-w-[200px]">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -218,7 +223,7 @@ export default function LearnerReportPage() {
               <select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 min-h-[48px] appearance-none"
                 required
               >
                 <option value="">Select Subject</option>
@@ -237,7 +242,7 @@ export default function LearnerReportPage() {
               <select
                 value={selectedExam}
                 onChange={(e) => setSelectedExam(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 min-h-[48px] appearance-none"
                 required
               >
                 {EXAMS.map((exam) => (
@@ -256,7 +261,7 @@ export default function LearnerReportPage() {
                 onChange={(e) => setMark(e.target.value)}
                 min="0"
                 max="100"
-                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 min-h-[48px]"
                 placeholder="e.g. 85"
                 required
               />
