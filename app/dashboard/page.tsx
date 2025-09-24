@@ -69,12 +69,26 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-100 p-8">
       <header className="mb-8 flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-800">Learner Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-        >
-          Logout
-        </button>
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                localStorage.clear();
+                setLearners([]);
+                alert('Data cleared! Refresh to load dummy data.');
+              }
+            }}
+            className="rounded-md bg-gray-500 px-4 py-2 text-white transition-colors hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          >
+            Clear Data
+          </button>
+          <button
+            onClick={handleLogout}
+            className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Logout
+          </button>
+        </div>
       </header>
 
       <div className="mb-8">
