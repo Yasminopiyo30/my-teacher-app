@@ -15,17 +15,16 @@ export default function LoginPage() {
       return;
     }
 
-    // ✅ Accept ANY credentials — it's a demo!
+    // Simulate login
     if (typeof window !== 'undefined') {
       localStorage.setItem('isLoggedIn', 'true');
-      localStorage.setItem('username', username); // Optional: save for display later
     }
 
     router.push('/dashboard');
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800 p-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
         <div className="mb-8 flex justify-center">
           <div className="rounded-full bg-blue-100 p-4">
@@ -64,8 +63,8 @@ export default function LoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. teacher"
+              className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              placeholder="Enter your username"
               required
             />
           </div>
@@ -82,8 +81,8 @@ export default function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g. 1234"
+              className="block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
+              placeholder="••••••••"
               required
             />
           </div>
@@ -95,12 +94,6 @@ export default function LoginPage() {
             Login
           </button>
         </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-xs text-gray-500">
-            This is a demo - no real authentication is performed.
-          </p>
-        </div>
       </div>
     </div>
   );

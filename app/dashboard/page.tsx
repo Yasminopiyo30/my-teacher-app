@@ -2,16 +2,22 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-//  SIMULATED DUMMY API — reads from localStorage
+// SIMULATED DUMMY API — reads from/saves to localStorage
 function getLearners() {
   if (typeof window === 'undefined') return [];
   const saved = localStorage.getItem('learners');
   return saved ? JSON.parse(saved) : [];
 }
 
+function saveLearners(learners: any[]) {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('learners', JSON.stringify(learners));
+  }
+}
+
 export default function Dashboard() {
   const router = useRouter();
-  const [learners, setLearners] = useState<any[]>([]); // State to hold learners
+  const [learners, setLearners] = useState<any[]>([]);
 
   // Load learners + check auth
   useEffect(() => {
@@ -24,7 +30,32 @@ export default function Dashboard() {
     }
 
     // Load learners from "dummy API"
-    setLearners(getLearners());
+    let currentLearners = getLearners();
+    if (currentLearners.length === 0) {
+      const dummy = [
+        {
+          id: 1,
+          name: 'Alice Johnson',
+          class: 'Class 1',
+          subjects: [
+            { name: 'Math', pathway: 'STEM', marks: [{ value: 85, exam: 'Exam 1' }] },
+            { name: 'History', pathway: 'Humanities', marks: [{ value: 70, exam: 'Exam 1' }] },
+          ],
+        },
+        {
+          id: 2,
+          name: 'Bob Smith',
+          class: 'Class 2',
+          subjects: [
+            { name: 'Art', pathway: 'Creative Arts', marks: [{ value: 90, exam: 'Exam 1' }] },
+          ],
+        },
+      ];
+      saveLearners(dummy);
+      setLearners(dummy);
+    } else {
+      setLearners(currentLearners);
+    }
   }, [router]);
 
   const handleLogout = () => {
@@ -35,9 +66,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-800 p-6">
-      <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">Learner Dashboard</h1>
+    <div className="min-h-screen bg-gray-100 p-8">
+      <header className="mb-8 flex items-center justify-between">
+        <h1 className="text-3xl font-bold text-gray-800">Learner Dashboard</h1>
         <button
           onClick={handleLogout}
           className="rounded-md bg-red-600 px-4 py-2 text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -56,10 +87,10 @@ export default function Dashboard() {
       </div>
 
       {learners.length === 0 ? (
-        <div className="rounded-lg bg-white p-8 text-center shadow">
+        <div className="rounded-lg bg-white p-8 text-center shadow-lg">
           <p className="text-gray-500">No learners registered yet.</p>
           <p className="mt-2 text-sm text-gray-400">
-            Click "Add New Learner" to get started.
+            Click &quot;Add New Learner&quot; to get started.
           </p>
         </div>
       ) : (
@@ -73,7 +104,7 @@ export default function Dashboard() {
                 {learner.name}
               </h3>
               <p className="mt-2 text-sm text-gray-600">
-                Subjects: {learner.subjects.length}
+                Class: {learner.class || 'N/A'} | Subjects: {learner.subjects.length}
               </p>
               <div className="mt-4 space-y-2">
                 {learner.subjects.map((subject: any, idx: number) => (

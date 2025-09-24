@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-// "dummy API data"
+// Dummy API data
 const SUBJECTS = [
   { name: 'Math', pathway: 'STEM' },
   { name: 'Biology', pathway: 'STEM' },
@@ -10,11 +10,13 @@ const SUBJECTS = [
   { name: 'Art', pathway: 'Creative Arts' },
   { name: 'Music', pathway: 'Creative Arts' },
 ];
+const CLASSES = ['Class 1', 'Class 2', 'Class 3'];
 
 export default function AddLearnerPage() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+  const [selectedClass, setSelectedClass] = useState('');
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -47,22 +49,33 @@ export default function AddLearnerPage() {
       return;
     }
 
-    // saving to localStorage
+    if (!selectedClass) {
+      alert('Please select a class');
+      return;
+    }
+
+    // Check for duplicate learner name
     let learners: any[] = [];
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('learners');
       if (saved) learners = JSON.parse(saved);
+      if (learners.some((l: any) => l.name.toLowerCase() === name.trim().toLowerCase())) {
+        alert('A learner with this name already exists');
+        return;
+      }
     }
 
+    // Save to localStorage
     const newLearner = {
-      id: Date.now(), // unique ID
+      id: Date.now(),
       name: name.trim(),
+      class: selectedClass,
       subjects: selectedSubjects.map((subjectName) => {
         const subject = SUBJECTS.find((s) => s.name === subjectName);
         return {
           name: subjectName,
           pathway: subject?.pathway || 'Unknown',
-          marks: [], // add marks later
+          marks: [],
         };
       }),
     };
@@ -73,12 +86,12 @@ export default function AddLearnerPage() {
       localStorage.setItem('learners', JSON.stringify(learners));
     }
 
-    alert(` ${name} has been registered!`);
-    router.push('/dashboard'); // go back to dashboard
+    alert(`${name} has been registered!`);
+    router.push('/dashboard');
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-8 max-w-2xl mx-auto bg-gray-100 min-h-screen">
       <div className="mb-6">
         <button
           onClick={() => router.push('/dashboard')}
@@ -88,8 +101,8 @@ export default function AddLearnerPage() {
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold mb-6">Register New Learner</h1>
+      <div className="bg-white rounded-lg shadow-lg p-8">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Register New Learner</h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Learner Name Input */}
@@ -105,10 +118,32 @@ export default function AddLearnerPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
               placeholder="e.g. Alice Johnson"
               required
             />
+          </div>
+
+          {/* Class Selection */}
+          <div>
+            <label
+              htmlFor="class"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Assign Class
+            </label>
+            <select
+              id="class"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+              required
+            >
+              <option value="">Select a class</option>
+              {CLASSES.map((cls) => (
+                <option key={cls} value={cls}>{cls}</option>
+              ))}
+            </select>
           </div>
 
           {/* Subject Selection */}
@@ -128,7 +163,7 @@ export default function AddLearnerPage() {
                     onChange={() => handleSubjectToggle(subject.name)}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <span className="ml-3">
+                  <span className="ml-3 text-gray-900">
                     <strong>{subject.name}</strong> →{' '}
                     <span className="text-gray-500">{subject.pathway}</span>
                   </span>
